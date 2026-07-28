@@ -81,7 +81,7 @@ Mach-O binaries (executables, shared libraries, frameworks and bundles) can be s
 * product is a collection of packages
 
 Both packages and products can be signed.
-Certificates need to be acquired from Apple by enrolling as a developer. [osxdemo/package.sh](sxdemo/package.sh) demonstrates signing an executable and a package.
+Certificates need to be acquired from Apple by enrolling as a developer. [osxdemo/package.sh](osxdemo/package.sh) demonstrates signing an executable and a package.
 
 ### OpenWRT
 
