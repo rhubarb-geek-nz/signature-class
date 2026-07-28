@@ -82,3 +82,7 @@ Both packages and products can be signed.
 ### OpenWRT
 
 ### Alpine
+
+### Java
+
+A [Java demo](javademo/package.sh) using [jarsigner](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jarsigner.html) shows the mecahanics and demonstrates [verification](javademo/verify.sh) against the CA.
