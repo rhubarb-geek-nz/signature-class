@@ -79,9 +79,9 @@ The package repository data is signed. This contains digests that can validate p
 Mach-O binaries (executables, shared libraries, frameworks and bundles) can be signed. Packages have a dual layer of a packaging
 * package is a collection of files installed at a location
 * product is a collection of packages
+
 Both packages and products can be signed.
-Certificates need to be acquired from Apple by enrolling as a developer.
-[osxdemo/package.sh] demonstrates signing an executable and a package.
+Certificates need to be acquired from Apple by enrolling as a developer. [osxdemo/package.sh](sxdemo/package.sh) demonstrates signing an executable and a package.
 
 ### OpenWRT
 
