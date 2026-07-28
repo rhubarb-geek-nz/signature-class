@@ -58,6 +58,8 @@ The various assets that support code-signing include;
 * MSI, MSIX and APPX packages
 * etc
 
+The [demo.ps1](pwshdemo/demo.ps1) demonstrates signing a PowerShell script with [Set-AuthenticodeSignature](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-authenticodesignature). If the CA is trusted by adding it to the local machine's certificate manager then [Get-AuthenticodeSignature](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/get-authenticodesignature) will work cleanly without error.
+
 ### Debian
 Focus will be on `deb` packages and `apt` repositories.
 
