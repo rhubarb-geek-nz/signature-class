@@ -1,0 +1,5 @@
+[ v3_req ]
+basicConstraints = critical,CA:false
+extendedKeyUsage = codeSigning,emailProtection
+subjectKeyIdentifier = none
+authorityKeyIdentifier = none

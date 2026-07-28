@@ -40,6 +40,12 @@ The GNU PGP tools are available for Linux and other platforms.
 ## Creating a code-signing certificate
 While you can buy a code-signing certificate, and you would need one for signing drivers and other software that would be accepted by Microsoft without challenge, it is worth going through the process of looking at a code-signing certificate, its various attributes and how to create one. A code signing certificate by itself may not be sufficient and you may need it signed by a CA.
 
+Use [demoCA.sh](demoCA.sh) to create a CA. This will create a PKCS12 store called `trust.pfx` with the CA certificate in it.
+
+Use [selfsign.sh](codesign/selfsign.sh) to create a self-signed code-signing certificate.
+
+Use [casign.sh](codesign/casign.sh) to sign the code-signing certificate with the CA.
+
 ## Platforms
 
 Various commons platforms are discussed.
