@@ -64,6 +64,7 @@ The [Makefile](windemo/Makefile) shows compiling a native program and signing it
 
 ### Debian
 Focus will be on `deb` packages and `apt` repositories.
+Recent versions of [debsig-verify](https://manpages.debian.org/unstable/debsig-verify/debsig-verify.1.en.html) fail to validate signatures using SHA1. This [replacement](debsig-verify/debsig-verify.sh) works around this. Keys do not need to be changed. When packages are signed with the new [debsigs](https://manpages.debian.org/unstable/debsigs/debsigs.1p.en.html) tool they will get a new format signature.
 
 ### Redhat
 Focus will be on `rpm` packages and `yum` repositories.
