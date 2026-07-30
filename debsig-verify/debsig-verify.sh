@@ -17,6 +17,7 @@ EOF
 
 WORKDIR="/tmp/debsig-verify-$$"
 NS="{https://www.debian.org/debsig/1.0/}"
+SIGNTYPE=origin
 
 mkdir "$WORKDIR"
 
@@ -30,7 +31,7 @@ do
 		false
 	fi
 
-	if ar x "--output=$WORKDIR" "$d" _gpgorigin > /dev/null 2>&1
+	if ar x "--output=$WORKDIR" "$d" "_gpg$SIGNTYPE" > /dev/null 2>&1
 	then
 		:
 	else
@@ -38,35 +39,19 @@ do
 		false
 	fi
 
-	if test ! -f "$WORKDIR/_gpgorigin"
+	if test ! -f "$WORKDIR/_gpg$SIGNTYPE"
 	then
 		echo "debsig: Origin Signature check failed. This deb might not be signed."
 		false
 	fi
 
-	KEYID=$(gpg --list-packets "$WORKDIR/_gpgorigin" | grep "^:signature packet:" | grep keyid | sed 's/.* //')
+	KEYID=$(gpg --list-packets "$WORKDIR/_gpg$SIGNTYPE" | grep "^:signature packet:" | grep keyid | sed 's/.* //')
 
 	test -n "$KEYID"
 
 	if test ! -d "/etc/debsig/policies/$KEYID"
 	then
 		echo "debsig: Could not find Origin directory for $KEYID"
-		false
-	fi
-
-	POLICY=$(find "/etc/debsig/policies/$KEYID" -name "*.pol")
-
-	if test ! -f "$POLICY"
-	then
-		echo "debsig: Could not find Origin directory for $KEYID"
-		false
-	fi
-
-	FILE=$( readAttribute "$POLICY" "${NS}Verification/${NS}Required[@id='$KEYID'][@Type='origin']" File )
-
-	if test -z "$FILE"
-	then
-		echo "debsig: Could not find Origin File for $KEYID"
 		false
 	fi
 
@@ -95,17 +80,36 @@ do
 		esac
 	done
 
-	if (
-		for e in $ORDERED
-		do
-			ar p "$d" $e
-		done
-	) | gpg --verify --no-default-keyring --keyring "/usr/share/debsig/keyrings/$KEYID/$FILE" "$WORKDIR/_gpgorigin" - > /dev/null 2>&1
-	then
-		NAME=$( readAttribute "$POLICY" "${NS}Origin[@id='$KEYID']" Name )
-		DESC=$( readAttribute "$POLICY" "${NS}Origin[@id='$KEYID']" Description )
+	if find "/etc/debsig/policies/$KEYID" -name "*.pol" -type f | (
+		SUCCESS=false
 
-		echo "debsig: Verified package from '$DESC' ($NAME)"
+		while read POLICY
+		do
+			FILE=$( readAttribute "$POLICY" "${NS}Verification/${NS}Required[@id='$KEYID'][@Type='$SIGNTYPE']" File )
+
+			if test -n "$FILE"
+			then
+				if (
+					for e in $ORDERED
+					do
+						ar p "$d" $e
+					done
+				) | gpg --verify --no-default-keyring --keyring "/usr/share/debsig/keyrings/$KEYID/$FILE" "$WORKDIR/_gpg$SIGNTYPE" - > /dev/null 2>&1
+				then
+					NAME=$( readAttribute "$POLICY" "${NS}Origin[@id='$KEYID']" Name )
+					DESC=$( readAttribute "$POLICY" "${NS}Origin[@id='$KEYID']" Description )
+
+					echo "debsig: Verified package from '$DESC' ($NAME)"
+					SUCCESS=true
+					break
+				fi
+			fi
+		done
+
+		$SUCCESS
+	)
+	then
+		:
 	else
 		echo "debsig: Failed verification for $d."
 		false
