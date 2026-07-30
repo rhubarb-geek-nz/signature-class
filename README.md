@@ -68,7 +68,7 @@ Recent versions of [debsig-verify](https://manpages.debian.org/unstable/debsig-v
 
 ### Redhat
 Focus will be on `rpm` packages and `yum` repositories.
-See [rpmdemo/README.md] for packaging the signing key and signing an `rpm`.
+See [rpmdemo](rpmdemo/README.md) for packaging the signing key and signing an `rpm`.
 
 ### NetBSD
 Signing a package can be done with either X509 and GPG.
