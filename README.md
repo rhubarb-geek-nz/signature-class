@@ -63,8 +63,13 @@ The [demo.ps1](pwshdemo/demo.ps1) demonstrates signing a PowerShell script with 
 The [Makefile](windemo/Makefile) shows compiling a native program and signing it with [signtool](https://learn.microsoft.com/en-us/windows/win32/seccrypto/signtool).
 
 ### Debian
-Focus will be on `deb` packages and `apt` repositories.
 Recent versions of [debsig-verify](https://manpages.debian.org/unstable/debsig-verify/debsig-verify.1.en.html) fail to validate signatures using SHA1. This [replacement](debsig-verify/debsig-verify.sh) works around this. Keys do not need to be changed. When packages are signed with the new [debsigs](https://manpages.debian.org/unstable/debsigs/debsigs.1p.en.html) tool they will get a new format signature.
+An APT repository can be signed by GPG. When preparing the repository, use a tool such as [reprepro](https://manpages.debian.org/trixie/reprepro/reprepro.1.en.html), this can generate a signature in Release.gpg. For the client to trust the APT repository it needs the required keyring and an entry in the APT sources.
+
+```
+$ cat /etc/apt/sources.list.d/example-packages.list
+deb [signed-by=/usr/share/keyrings/example-keyring.gpg] https://packages.example.com/debian/12 bookworm main
+```
 
 ### Redhat
 Focus will be on `rpm` packages and `yum` repositories.
