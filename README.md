@@ -72,8 +72,28 @@ deb [signed-by=/usr/share/keyrings/example-keyring.gpg] https://packages.example
 ```
 
 ### Redhat
-Focus will be on `rpm` packages and `yum` repositories.
 See [rpmdemo](rpmdemo/README.md) for packaging the signing key and signing an `rpm`.
+A `yum` repository can be created with [createrepo](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/6/html/deployment_guide/sec-yum_repository). `GPG` can be used to sign the `repomd.xml` file.
+
+```
+$ createrepo --no-database .
+$ cd repodata
+$ rm -rf repomd.xml.asc
+$ gpg --batch -a --detach-sign --default-key "$KEYNAME" repomd.xml
+$ ls -ld repomd.xml repomd.xml.asc
+```
+
+On the client this can be secured with a keyring.
+
+```
+$ cat /etc/yum.repos.d/example-packages.repo
+[example-packages]
+name=example-packages
+baseurl=https://packages.example.com/mariner/$releasever/$basearch
+gpgcheck=1
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-example
+```
 
 ### NetBSD
 Signing a package can be done with either X509 and GPG.
